@@ -1,9 +1,9 @@
+import { useState } from "react";
 import Expenses from "./components/Expenses/Expenses";
 import NewExpense from "./components/NewExpense/NewExpense";
 
 const App = () => {
-
-  const expenses = [
+  const mockdata = [
     {
       title: "Car test",
       amount: 111.11,
@@ -21,12 +21,16 @@ const App = () => {
     },
   ];
 
+  const [expenses, setExpenses] = useState(mockdata);
+
   const addExpenseHandler = (expense) => {
     console.log("in App.js");
     console.log(expense);
-  };
 
-  
+    setExpenses((prevExpenses) => {
+      return [expense, ...prevExpenses]
+    });
+  };
 
   return (
     <div>
