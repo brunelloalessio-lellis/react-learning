@@ -5,6 +5,7 @@ const ExpenseForm = (props) => {
   const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredAmount, setEnteredAmount] = useState("");
   const [enteredDate, setEnteredDate] = useState("");
+  const [expanded, setExpanded] = useState(false);
 
   /*const [userInput, setUserInput] = useState({
     enteredTitle: "",
@@ -41,27 +42,56 @@ const ExpenseForm = (props) => {
   };
 
   const submitHandler = (event) => {
-    event.preventDefault()
+    event.preventDefault();
 
     const expenseData = {
-        title: enteredTitle,
-        amount: enteredAmount,
-        date: new Date(enteredDate)
-    }
-    
-    setEnteredAmount('')
-    setEnteredTitle('')
-    setEnteredDate('')
+      title: enteredTitle,
+      amount: enteredAmount,
+      date: new Date(enteredDate),
+    };
 
-    props.onSaveExpenseData(expenseData)
+    setExpanded(false);
+    setEnteredAmount("");
+    setEnteredTitle("");
+    setEnteredDate("");
+
+    props.onSaveExpenseData(expenseData);
   };
+
+  const expandFormSubmitHandler = (event) => {
+    event.preventDefault();
+    setExpanded(true);
+  };
+
+  const onCancelClickHandler = ()=>{
+    setExpanded(false);
+    setEnteredAmount("");
+    setEnteredTitle("");
+    setEnteredDate("");
+  }
+
+  if (!expanded) {
+    return (
+      <form onSubmit={expandFormSubmitHandler}>
+        <div className="new-expense__actions">
+          <center>
+            <button type="submit">Add New Expense</button>
+          </center>
+        </div>
+      </form>
+    );
+  }
 
   return (
     <form onSubmit={submitHandler}>
       <div className="new-expense__controls">
         <div className="new-expense__control">
           <label>Title</label>
-          <input type="text" value={enteredTitle} onChange={titleChangeHandler} />
+          <input
+            type="text"
+            value={enteredTitle}
+            onChange={titleChangeHandler}
+          />
         </div>
         <div className="new-expense__control">
           <label>Amount</label>
@@ -84,8 +114,11 @@ const ExpenseForm = (props) => {
           />
         </div>
       </div>
-      <div className="new-expense__actions">
-        <button type="submit">Add Expense</button>
+      <div>
+        <div className="new-expense__actions">
+          <button type="button" onClick={onCancelClickHandler}>Cancel</button>
+          <button type="submit">Add Expense</button>
+        </div>
       </div>
     </form>
   );
